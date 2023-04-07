@@ -3,7 +3,7 @@ const startQuestion = [
         type: 'list',
         name: 'initialQuestion',
         message: 'Please choose an option.',
-        choices: ['View All Departments', 'View All Roles', 'View All Employees', 'Add a Department', 'Add a role', 'Add an Employee', 'Update an Employee Role']
+        choices: ['View All Departments', 'View All Roles', 'View All Employees', 'Add a Department', 'Add a role', 'Add an Employee', 'Update an Employee Role', 'Quit']
     }
 ]
 
@@ -51,7 +51,9 @@ const empQuestions = [
         name: 'firstName',
         message: "What is the employee's first name?",
         when: (answers) => {
-            if (answers.initialQuestion === 'Add an Employee' || answers.manName === 'Add a new manager' )
+            if (answers.initialQuestion === 'Add an Employee' || answers.manName === 'Add a new manager' ) {
+                return true
+            }
         }
     },
     {
@@ -72,5 +74,7 @@ const empQuestions = [
         choices: ['Add a new manager']
     },
 ]
+
+module.exports = { startQuestion, deptQuestions, roleQuestions, empQuestions }
 
 // Maybe add questions to update a new employee or allow for full rewrite?
