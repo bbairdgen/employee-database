@@ -16,7 +16,7 @@ When you have added the information, run "node index" to start the application f
 
 Click on the following link to view a sample video. 
 
-![Sample link](https://drive.google.com/file/d/1wjFBW1F39nZxmjzVgcJDd0zzd5f6zxbO/view)
+[Link to Sample Video](https://drive.google.com/file/d/1wjFBW1F39nZxmjzVgcJDd0zzd5f6zxbO/view)
 
 ## Credits
 
