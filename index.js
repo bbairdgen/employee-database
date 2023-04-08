@@ -29,7 +29,6 @@ function start() {
             case "View All Departments":
                 viewDepartments();
                 break;
-            // change to other options and their functions
             case "View All Roles":
                 viewRoles();
                 break;
@@ -58,7 +57,7 @@ function start() {
 }
 
 const viewDepartments = () => {
-    let query = "SELECT department.id AS ID, department.department_name AS Department FROM department"
+    let query = "SELECT department.id AS ID, department.department_name AS Department FROM department ORDER BY department.id"
 
     connection.query(query, function (err, res) {
         if (err) throw (err)
@@ -66,8 +65,9 @@ const viewDepartments = () => {
         start();
     })
 }
+
 const viewRoles = () => {
-    let query = "SELECT role.id, role.title, role.salary, department.department_name AS 'department name' FROM role RIGHT JOIN department ON role.department_id = department.id"
+    let query = "SELECT role.id, role.title, role.salary, department.department_name AS 'department name' FROM role RIGHT JOIN department ON role.department_id = department.id ORDER BY role.id"
 
     connection.query(query, function (err, res) {
         if (err) throw (err)
@@ -76,8 +76,9 @@ const viewRoles = () => {
     })
 
 }
+
 const viewEmployees = () => {
-    let query = "SELECT t1.first_name AS 'First Name', t1.last_name AS 'Last Name', CONCAT(t2.first_name, ' ', t2.last_name) AS manager FROM employee t1 INNER JOIN employee t2 ON t1.manager_id = t2.id"
+    let query = "SELECT emp.id AS ID, emp.first_name AS 'First Name', emp.last_name AS 'Last Name', r.title AS 'Role', r.salary AS 'Salary', dep.department_name AS 'Department', CONCAT(man.first_name, ' ', man.last_name) AS 'Manager' FROM employee emp INNER JOIN role r ON emp.role_id = r.id INNER JOIN department dep ON r.department_id = dep.id LEFT JOIN employee man ON emp.manager_id = man.id ORDER BY emp.id;"
 
     connection.query(query, function (err, res) {
         if (err) throw (err)
@@ -134,6 +135,7 @@ const addRole = () => {
         })
     })
 }
+
 const addEmployee = () => {
 
     let query = "SELECT employee.id, CONCAT(employee.first_name, ' ', employee.last_name) AS Manager FROM employee"
@@ -184,13 +186,14 @@ const addEmployee = () => {
                         manager_id: user.managerId,
                         role_id: answer.addRole
                     })
+                    start()
                 })
-                start()
             })
         })
         if (err) throw (err)
     })
 }
+
 const updateEmployee = () => {
     connection.query("SELECT employee.id, CONCAT(employee.first_name, ' ', employee.last_name) AS Employee FROM employee", function (err, res) {
         if (err) throw (err);
@@ -219,22 +222,20 @@ const updateEmployee = () => {
                         message: "What is the role?"
                     }
                 ]).then(function (answer) {
-                    console.log(answer.updatedRole);
-                    connection.query(
-                        "UPDATE employee SET ? WHERE ?"
+                        connection.query(
+                        "UPDATE employee SET ? WHERE ?",
                         [{
                             role_id: answer.updatedRole
                         },
                         {
-                            id: empName.employeeID
+                            id: empName.employeeId
                         }]
                     )
+                    start()
                 })
             })
         })
     })
 }
-
-
 
 start()
